@@ -30,6 +30,9 @@ function formatTimeString(hour,minute){
     if(hour > 12){
         tailStr = "PM";
         hour -= 12;
+    }else if(hour === 0){
+        hour = 12;
+        tailStr = "AM";
     }
     hour = ""+hour;
     minute = ""+minute;
@@ -59,10 +62,47 @@ function testTMDBCall(){
     var loaderDOM = document.getElementById('load_spinner'),
     imgList;
     loaderDOM.style.display = "block";
+    
+    /*data = {
+        results:[
+            {
+                "original_name":"Titans",
+                "id":75450,"name":"Titans",
+                "vote_count":24,"vote_average":6.4,
+                "first_air_date":"2018-10-12",
+                "poster_path":"/oCK6fykCZUQjTJG4IDhfWCxcXqG.jpg",
+                "genre_ids":[10759,10765],
+                "original_language":"en",
+                "backdrop_path":"/9foO1E8sliKN2dvtMOEwwQgynlW.jpg",
+                "overview":"A team of young superheroes led by Nightwing (formerly Batman's first Robin) form to combat evil and other perils.",
+                "origin_country":["US"],
+                "popularity":42.771
+            },
+            {
+                "original_name":"Legacies",
+                "id":79460,"name":"Legacies",
+                "vote_count":17,
+                "vote_average":5.8,
+                "first_air_date":"2018-10-25",
+                "poster_path":"/pwvKOtTpbMacI463EDfyKtfn4Kd.jpg",
+                "genre_ids":[18,10765],
+                "original_language":"en",
+                "backdrop_path":"/tIYb76SgqjUJ6XLFwBrk4gvGNtn.jpg",
+                "overview":"In a place where young witches, vampires, and werewolves are nurtured to be their best selves in spite of their worst impulses, Klaus Mikaelson’s daughter, 17-year-old Hope Mikaelson, Alaric Saltzman’s twins, Lizzie and Josie Saltzman, among others, come of age into heroes and villains at The Salvatore School for the Young and Gifted.",
+                "origin_country":["US"],
+                "popularity":37.498
+            }
+        ]
+    }
+    imgList = data.results.map(function(result){return result.backdrop_path});
+    setBackdropImg(imgList);
+    generateTemplate(data.results);*/
+
     tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
     function(data){
         imgList = data.results.map(function(result){return result.backdrop_path});
         setBackdropImg(imgList);
+        generateTemplate(data.results);
     },
     function(e){
         console.log(e);
@@ -116,5 +156,27 @@ function testTMDBCall(){
 (function initApp(){
     setDateTime();
     testTMDBCall();
+    document.getElementById('list__fab').addEventListener('click',function(){
+        var listDOM = document.getElementById('series-list');
+        if(listDOM.style.display === "none" || listDOM.style.display === ""){
+            listDOM.style.display = "inline-block";
+        }else{
+            listDOM.style.display = "none";
+        }
+    });
     setInterval(setDateTime,60000);
 })();
+
+function generateTemplate(resultList){
+    var tplString = "";
+    resultList.forEach(function(data){
+        tplString += `<div class="series-list__card">
+                        <img src="http://image.tmdb.org/t/p/w200/${data.poster_path}"/>
+                        <h3>${data.name}</h3>
+                        <p>${data.overview}</p>
+                        <p>Language: <small>${data.original_language}</small></p>
+                    </div>`;
+    });
+    var listDOM = document.getElementById('series-list');
+    listDOM.innerHTML = tplString;
+}

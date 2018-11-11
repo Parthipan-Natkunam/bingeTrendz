@@ -1,0 +1,4 @@
+1. Store results locally.
+2. Add UI to show result data.
+3. 24hr refresh time for stored data.
+4. If not connected and validity expired, show old data with a warning message.

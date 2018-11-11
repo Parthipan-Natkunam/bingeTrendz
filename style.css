@@ -42,6 +42,53 @@ html{
 	color: #fff;
 	text-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
 }
+#list__fab{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fc2930;
+    display: inline-block;
+    position: absolute;
+    bottom: -40px;
+	right: 40%;
+	-webkit-animation: beat 2s ease-in-out infinite;
+	animation: beat 2s ease-in-out infinite;
+	cursor: pointer;
+}
+#list__fab>img{
+	position:relative;
+	top:25%;
+	width:20px;
+	height:auto;
+}
+
+.series-list__wrapper{
+	position:absolute;
+	z-index:10;
+	top:0;
+	display: none;
+    width: 75%;
+    height: 100vh;
+	overflow-y: scroll;
+	background: rgba(255,255,255,0.5);
+}
+.series-list__card{
+	padding: 8px;
+	margin: 8px;
+	width: 30%;
+	overflow: hidden;
+	background: #fff;
+	text-align: center;
+	float:left;
+	position: relative;
+	height: 290px;
+	overflow-y: scroll;
+
+}
+.series-list__card img{
+	width:100px;
+	height:auto;
+}
 
 .loader-wrapper{
 	text-align: center;
@@ -65,4 +112,30 @@ html{
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+@-webkit-keyframes beat {
+	0% { -webkit-transform: scale(1); }
+	50% { -webkit-transform: scale(1.5);}
+	100% { -webkit-transform: scale(1); }
+}
+@keyframes beat {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.5);}
+	100% {transform: scale(1); }
+}
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.6); 
+	background-color: rgba(0,0,0,0.6);
 }
