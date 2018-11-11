@@ -116,4 +116,5 @@ function testTMDBCall(){
 (function initApp(){
     setDateTime();
     testTMDBCall();
+    setInterval(setDateTime,60000);
 })();
