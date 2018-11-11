@@ -39,7 +39,7 @@ function formatTimeString(hour,minute){
 
 function setBackdropImg(imgList){
     var backdropDOM = document.getElementById('full-cover__img'),
-        loaderDOM = document.getElementById('load_spinner');
+        loaderDOM = document.getElementById('load_spinner'),
         backdropImg = selectImage(imgList);
         fullImgURI = tmdb.images_uri+'/w500/'+backdropImg;
     backdropDOM.src = fullImgURI;
@@ -56,7 +56,9 @@ function selectImage(imageList){
 }
 
 function testTMDBCall(){
-    var imgList;
+    var loaderDOM = document.getElementById('load_spinner'),
+    imgList;
+    loaderDOM.style.display = "block";
     tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
     function(data){
         imgList = data.results.map(function(result){return result.backdrop_path});
