@@ -39,9 +39,12 @@ function formatTimeString(hour,minute){
 
 function setBackdropImg(imgList){
     var backdropDOM = document.getElementById('full-cover__img'),
+        loaderDOM = document.getElementById('load_spinner');
         backdropImg = selectImage(imgList);
         fullImgURI = tmdb.images_uri+'/w500/'+backdropImg;
     backdropDOM.src = fullImgURI;
+    loaderDOM.style.display = "none";
+    backdropDOM.style.display = "inline";
 }
 
 function selectImage(imageList){
@@ -53,9 +56,10 @@ function selectImage(imageList){
 }
 
 function testTMDBCall(){
+    var imgList;
     tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
     function(data){
-        var imgList = data.results.map(function(result){return result.poster_path});
+        imgList = data.results.map(function(result){return result.backdrop_path});
         setBackdropImg(imgList);
     },
     function(e){
@@ -68,7 +72,7 @@ function testTMDBCall(){
 		"api_key": "25a75c01db2880fe53666785fe0ed4d6",
 		"base_uri": "http://api.themoviedb.org/3",
 		"images_uri": "http://image.tmdb.org/t/p",
-		"timeout": 5000,
+        "timeout": 5000,
 		call: function(url, params, success, error){
 			var params_str = "";
 			for (var key in params) {

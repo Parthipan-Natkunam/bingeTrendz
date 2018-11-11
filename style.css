@@ -16,6 +16,7 @@ html{
 #full-cover__img{
 	width: 100%;
 	height: auto;
+	display: none;
 }
 .date-card{
 	position: absolute;
@@ -40,4 +41,28 @@ html{
 .date-card__time,.date-card__date{
 	color: #fff;
 	text-shadow: rgba(0,0,0,0.5) 2px 2px 2px;
+}
+
+.loader-wrapper{
+	text-align: center;
+	position: absolute;
+	left:50%;
+	top:50%;
+}
+.loader-wrapper .spinner {
+  border: 8px solid #fff;
+  border-radius: 50%;
+  border-top: 8px solid rgb(10,55,104);
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 0.5s linear infinite;
+  animation: spin 0.5s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
