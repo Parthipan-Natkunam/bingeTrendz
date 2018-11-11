@@ -1,6 +1,3 @@
-(function initApp(){
-    setDateTime();
-})();
 function setDateTime(){
     var dateCardDOM = document.getElementById('date-card__date'),
         timeCardDOM = document.getElementById('date-card__time'),
@@ -35,6 +32,82 @@ function formatTimeString(hour,minute){
         hour -= 12;
     }
     hour = ""+hour;
+    minute = ""+minute;
+    if(minute.length === 1) minute = "0"+minute;
     return hour + ":" + minute + " " + tailStr;
 }
 
+function setBackdropImg(imgList){
+    var backdropDOM = document.getElementById('full-cover__img'),
+        backdropImg = selectImage(imgList);
+        fullImgURI = tmdb.images_uri+'/w500/'+backdropImg;
+    backdropDOM.src = fullImgURI;
+}
+
+function selectImage(imageList){
+    if(imageList.length){
+        var index = Math.floor(Math.random() * (imageList.length));
+        return imageList[index]; 
+    }
+    return "";
+}
+
+function testTMDBCall(){
+    tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
+    function(data){
+        var imgList = data.results.map(function(result){return result.poster_path});
+        setBackdropImg(imgList);
+    },
+    function(e){
+        console.log(e);
+    });
+}
+
+(function() {
+	window.tmdb = {
+		"api_key": "25a75c01db2880fe53666785fe0ed4d6",
+		"base_uri": "http://api.themoviedb.org/3",
+		"images_uri": "http://image.tmdb.org/t/p",
+		"timeout": 5000,
+		call: function(url, params, success, error){
+			var params_str = "";
+			for (var key in params) {
+				if (params.hasOwnProperty(key)) {
+                    params_str+="/"+encodeURIComponent(params[key]);
+				}
+            }
+            params_str +="?api_key="+tmdb.api_key;
+			var xhr = new XMLHttpRequest();
+			xhr.timeout = tmdb.timeout;
+			xhr.ontimeout = function () {
+				throw("Request timed out: " + url +" "+ params_str);
+			};
+			xhr.open("GET", tmdb.base_uri + url + params_str, true);
+			xhr.setRequestHeader('Accept', 'application/json');
+			xhr.responseType = "text";
+			xhr.onreadystatechange = function () {
+				if (this.readyState === 4) {
+					if (this.status === 200){
+						if (typeof success == "function") {
+							success(JSON.parse(this.response));	
+						}else{
+							throw('No success callback, but the request gave results')
+						}
+					}else{
+						if (typeof error == "function") {
+							error(JSON.parse(this.response));
+						}else{
+							throw('No error callback')
+						}
+					}
+				}
+			};
+			xhr.send();
+		}
+	}
+})();
+
+(function initApp(){
+    setDateTime();
+    testTMDBCall();
+})();
