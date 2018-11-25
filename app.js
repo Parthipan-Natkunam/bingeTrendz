@@ -111,7 +111,7 @@ function testTMDBCall(){
 
 (function() {
 	window.tmdb = {
-		"api_key": "25a75c01db2880fe53666785fe0ed4d6",
+		"api_key": "47729872a52678aftb63789",
 		"base_uri": "http://api.themoviedb.org/3",
 		"images_uri": "http://image.tmdb.org/t/p",
         "timeout": 5000,
@@ -169,12 +169,13 @@ function testTMDBCall(){
 
 function generateTemplate(resultList){
     var tplString = "";
-    resultList.forEach(function(data){
+    resultList.forEach(function(data,index){
         tplString += `<div class="series-list__card">
+                        <span class="trend-rank">${index+1}</span>
                         <img src="http://image.tmdb.org/t/p/w200/${data.poster_path}"/>
-                        <h3>${data.name}</h3>
-                        <p>${data.overview}</p>
-                        <p>Language: <small>${data.original_language}</small></p>
+                        <h3 class="series-name">${data.name}</h3>
+                        <p title="${data.overview}" class="series-overview">${data.overview}</p>
+                        <p class="series-lang">Original Language: <span>${data.original_language}</span></p>
                     </div>`;
     });
     var listDOM = document.getElementById('series-list');
