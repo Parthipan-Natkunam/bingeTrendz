@@ -58,54 +58,34 @@ function selectImage(imageList){
     return "";
 }
 
-function testTMDBCall(){
-    var loaderDOM = document.getElementById('load_spinner'),
-    imgList;
-    loaderDOM.style.display = "block";
-    
-    /*data = {
-        results:[
-            {
-                "original_name":"Titans",
-                "id":75450,"name":"Titans",
-                "vote_count":24,"vote_average":6.4,
-                "first_air_date":"2018-10-12",
-                "poster_path":"/oCK6fykCZUQjTJG4IDhfWCxcXqG.jpg",
-                "genre_ids":[10759,10765],
-                "original_language":"en",
-                "backdrop_path":"/9foO1E8sliKN2dvtMOEwwQgynlW.jpg",
-                "overview":"A team of young superheroes led by Nightwing (formerly Batman's first Robin) form to combat evil and other perils.",
-                "origin_country":["US"],
-                "popularity":42.771
-            },
-            {
-                "original_name":"Legacies",
-                "id":79460,"name":"Legacies",
-                "vote_count":17,
-                "vote_average":5.8,
-                "first_air_date":"2018-10-25",
-                "poster_path":"/pwvKOtTpbMacI463EDfyKtfn4Kd.jpg",
-                "genre_ids":[18,10765],
-                "original_language":"en",
-                "backdrop_path":"/tIYb76SgqjUJ6XLFwBrk4gvGNtn.jpg",
-                "overview":"In a place where young witches, vampires, and werewolves are nurtured to be their best selves in spite of their worst impulses, Klaus Mikaelson’s daughter, 17-year-old Hope Mikaelson, Alaric Saltzman’s twins, Lizzie and Josie Saltzman, among others, come of age into heroes and villains at The Salvatore School for the Young and Gifted.",
-                "origin_country":["US"],
-                "popularity":37.498
-            }
-        ]
-    }
-    imgList = data.results.map(function(result){return result.backdrop_path});
+function showData(data){
+    data.results = data.results || data;
+    var imgList = data.results.map(function(result){return result.backdrop_path});
     setBackdropImg(imgList);
-    generateTemplate(data.results);*/
+    generateTemplate(data.results);
+}
 
+function makeTMDBCall(){
+    var loaderDOM = document.getElementById('load_spinner');
+    loaderDOM.style.display = "block";
+    var cachedData = getCachedData();
+    var isCacheValid = new Date().getTime() - cachedData.refetchTime < 0;
+    if(!!cachedData.result && isCacheValid){
+        showData(cachedData.result);
+        return;
+    }
     tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
     function(data){
-        imgList = data.results.map(function(result){return result.backdrop_path});
-        setBackdropImg(imgList);
-        generateTemplate(data.results);
+        showData(data);
+        setDataToLocalStore(data.results);
     },
     function(e){
-        ShowNotification({type:'info',message:'Something went wrong. Please try again later.'});
+        if(cachedData && !!cachedData.result){
+            showData(cachedData.result);
+            ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing old reults.'});
+            return;
+        }
+        ShowNotification({type:'error',message:'Something went wrong. Please try again later.'});
     });
 }
 
@@ -155,7 +135,7 @@ function testTMDBCall(){
 
 (function initApp(){
     setDateTime();
-    testTMDBCall();
+    makeTMDBCall();
     document.getElementById('list__fab').addEventListener('click',function(){
         var listDOM = document.getElementById('series-list');
         if(listDOM.style.display === "none" || listDOM.style.display === ""){
@@ -196,4 +176,34 @@ function generateDOMElement(tplStr){
     var tempDom = document.createElement('div');
     tempDom.innerHTML = tplStr.trim();
     return tempDom.firstElementChild;
+}
+
+function setDataToLocalStore(resultObj){
+    if(window.localStorage){
+        try{
+            window.localStorage.setItem('bingeTdz_cache',JSON.stringify(resultObj));
+            var cachedTime = new Date().getTime();
+            var refetchTime = cachedTime + (12*60*60000); // 12 hour window
+            window.localStorage.setItem('bingeTdz_refetchTime',refetchTime);
+        }catch(e){
+            console.log('LocalStorage set failed.');
+        }
+    }
+}
+
+function getCachedData(){
+   var cachedResult =  window.localStorage.getItem('bingeTdz_cache');
+   if(!!cachedResult){
+       cachedResult = JSON.parse(cachedResult);
+   }
+   var refetchTime = window.localStorage.getItem('bingeTdz_refetchTime');
+   if(!isNaN(+refetchTime)){
+        refetchTime = +refetchTime;
+   }else{
+       refetchTime = 0;
+   }
+   return {
+        result: cachedResult,
+        refetchTime: refetchTime
+   };
 }
