@@ -105,7 +105,7 @@ function testTMDBCall(){
         generateTemplate(data.results);
     },
     function(e){
-        console.log(e);
+        ShowNotification({type:'info',message:'Something went wrong. Please try again later.'});
     });
 }
 
@@ -180,4 +180,20 @@ function generateTemplate(resultList){
     });
     var listDOM = document.getElementById('series-list');
     listDOM.innerHTML = tplString;
+}
+
+function ShowNotification(opts){
+    var notificationTplStr = `<div class="notification ${opts.type}">
+                             <p>${opts.message}</p>
+                           </div>`;
+    var mainContainer = document.getElementsByClassName('full-cover__conatiner')[0];
+    var notificationDOM = generateDOMElement(notificationTplStr);
+    var refDOM = document.getElementsByClassName('date-card')[0];
+    mainContainer.insertBefore(notificationDOM,refDOM);
+}
+
+function generateDOMElement(tplStr){
+    var tempDom = document.createElement('div');
+    tempDom.innerHTML = tplStr.trim();
+    return tempDom.firstElementChild;
 }

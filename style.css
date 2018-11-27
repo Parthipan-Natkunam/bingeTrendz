@@ -179,3 +179,27 @@ html{
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.6); 
 	background-color: rgba(0,0,0,0.6);
 }
+
+
+.notification{
+	position: fixed;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 50px;
+	text-align: center;
+	font-size: 1.2rem;
+	line-height: 10px;
+	font-weight: bold;
+	color: #fff;
+}
+.notification.warning{
+	background: #ffcc55;
+	color: #333;
+}
+.notification.error{
+	background: #ff0055;
+}
+.notification.info{
+	background: #55ccff;
+}
