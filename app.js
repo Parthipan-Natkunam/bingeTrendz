@@ -65,13 +65,12 @@ function formatTimeString(hour,minute){
 }
 
 function setBackdropImg(imgList){
-    var backdropDOM = document.getElementById('full-cover__img'),
+    var backdropDOM = document.getElementById('base__cover'),
         loaderDOM = document.getElementById('load_spinner'),
         backdropImg = selectImage(imgList);
-        fullImgURI = tmdb.images_uri+'/w500/'+backdropImg;
-    backdropDOM.src = fullImgURI;
+        fullImgURI = "url('"+tmdb.images_uri+'/w500/'+backdropImg;+"')";
+    backdropDOM.style.backgroundImage = fullImgURI;
     loaderDOM.style.display = "none";
-    backdropDOM.style.display = "inline";
 }
 
 function selectImage(imageList){
@@ -91,7 +90,7 @@ function showData(data){
 
 (function() {
 	window.tmdb = {
-		"api_key": "25a75c01db2880fe53666785fe0ed4d6",
+		"api_key": "47729872a52678aftb63789",
 		"base_uri": "http://api.themoviedb.org/3",
 		"images_uri": "http://image.tmdb.org/t/p",
         "timeout": 5000,
