@@ -204,17 +204,25 @@ html{
 
 /*media queries*/
 @media screen and (max-width : 320px) {
-	html{
-		font-size: 12px;
+	.series-list__wrapper{
+		width: 75%;
 	}
+}
+@media screen and (max-width : 600px) {
 	#list__fab{
-		right: 5%;
+		top:8px;
+		right: 8px;
+		width: 16px;
+		height: 16px;
 	}
-	.series-list__card{
+	#list__fab>img{
+		width: 10px;
+	}
+	.series-list__wrapper{
 		width: 85%;
 	}
-	.series-name{
-		margin-top: 1rem;
+	.series-list__card{
+		width: auto;
 	}
 	.date-card{
 		box-shadow: none;
@@ -224,8 +232,40 @@ html{
 		display: none;
 	}
 }
-@media (min-width : 768px) and (max-width : 1024px) {
-
+@media screen and (max-width:767px){
+	html{
+		font-size: 12px;
+	}
+	.series-name{
+		margin-top: 1rem;
+	}
+}
+@media screen and (min-width : 601px) and (max-width:767px){
+	.series-list__wrapper{
+		width: 65%;
+	}
+	.series-list__card{
+		width: 40%;
+	}
+}
+@media (min-width : 768px) and (max-width : 976px) {
+	html{
+		font-size: 14px;
+	}
+	.series-list__wrapper{
+		width: 540px;
+	}
+	.series-list__card{
+		width: 230px;
+	}
+}
+@media (min-width : 977px) and (max-width : 1024px) {
+	.series-list__wrapper{
+		width: 635px;
+	}
+	.series-list__card{
+		width: 275px;
+	}
 }
 @media (min-width : 1824px) {
 
