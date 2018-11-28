@@ -96,8 +96,8 @@ html{
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
-	line-height: 1.2em;
-	height: 3.6em;
+	line-height: 1.2rem;
+	height: 3.6rem;
 	text-overflow: ellipsis;
 	font-size: 0.9rem;
 }
@@ -200,4 +200,33 @@ html{
 }
 .notification.info{
 	background: #55ccff;
+}
+
+/*media queries*/
+@media screen and (max-width : 320px) {
+	html{
+		font-size: 12px;
+	}
+	#list__fab{
+		right: 5%;
+	}
+	.series-list__card{
+		width: 85%;
+	}
+	.series-name{
+		margin-top: 1rem;
+	}
+	.date-card{
+		box-shadow: none;
+		background: transparent;
+	}
+	.date-card__date,.date-card__time{
+		display: none;
+	}
+}
+@media (min-width : 768px) and (max-width : 1024px) {
+
+}
+@media (min-width : 1824px) {
+
 }
