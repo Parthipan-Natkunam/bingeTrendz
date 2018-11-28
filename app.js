@@ -163,12 +163,15 @@ function generateTemplate(resultList){
 
 function ShowNotification(opts){
     var notificationTplStr = `<div class="notification ${opts.type}">
-                             <p>${opts.message}</p>
+                             <p>${opts.message} <span id="notification_close">&times;</span></p>
                            </div>`;
     var mainContainer = document.getElementsByClassName('full-cover__conatiner')[0];
     var notificationDOM = generateDOMElement(notificationTplStr);
     var refDOM = document.getElementsByClassName('date-card')[0];
     mainContainer.insertBefore(notificationDOM,refDOM);
+    document.getElementById('notification_close').addEventListener('click',function(e){
+        notificationDOM.remove();
+    });
 }
 
 function generateDOMElement(tplStr){
