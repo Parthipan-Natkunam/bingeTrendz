@@ -1,17 +1,3 @@
-(function initApp(){
-    setDateTime();
-    makeTMDBCall();
-    document.getElementById('list__fab').addEventListener('click',function(){
-        var listDOM = document.getElementById('series-list');
-        if(listDOM.style.display === "none" || listDOM.style.display === ""){
-            listDOM.style.display = "inline-block";
-        }else{
-            listDOM.style.display = "none";
-        }
-    });
-    setInterval(setDateTime,60000);
-})();
-
 function makeTMDBCall(){
     var loaderDOM = document.getElementById('load_spinner');
     loaderDOM.style.display = "block";
@@ -105,7 +91,7 @@ function showData(data){
 
 (function() {
 	window.tmdb = {
-		"api_key": "47729872a52678aftb63789",
+		"api_key": "25a75c01db2880fe53666785fe0ed4d6",
 		"base_uri": "http://api.themoviedb.org/3",
 		"images_uri": "http://image.tmdb.org/t/p",
         "timeout": 5000,
@@ -147,7 +133,19 @@ function showData(data){
 	}
 })();
 
-
+(function initApp(){
+    setDateTime();
+    makeTMDBCall();
+    document.getElementById('list__fab').addEventListener('click',function(){
+        var listDOM = document.getElementById('series-list');
+        if(listDOM.style.display === "none" || listDOM.style.display === ""){
+            listDOM.style.display = "inline-block";
+        }else{
+            listDOM.style.display = "none";
+        }
+    });
+    setInterval(setDateTime,60000);
+})();
 
 function generateTemplate(resultList){
     var tplString = "";
