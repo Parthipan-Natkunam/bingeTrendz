@@ -44,7 +44,6 @@ html{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #fc2930;
     display: inline-block;
     position: absolute;
     bottom: -40px;
@@ -55,8 +54,8 @@ html{
 }
 #list__fab>img{
 	position:relative;
-	top:25%;
-	width:20px;
+	top:20%;
+	width:40px;
 	height:auto;
 }
 
@@ -79,7 +78,7 @@ html{
 	text-align: center;
 	float:left;
 	position: relative;
-	height: 305px;
+	height: 325px;
 	border-radius: 5px;
 }
 .series-list__card img{

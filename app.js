@@ -15,7 +15,7 @@ function makeTMDBCall(){
     function(e){
         if(cachedData && !!cachedData.result){
             showData(cachedData.result);
-            ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing old reults.'});
+            ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing older reults.'});
             return;
         }
         ShowNotification({type:'error',message:'Something went wrong. Please try again later.'});
