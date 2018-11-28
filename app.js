@@ -1,3 +1,41 @@
+(function initApp(){
+    setDateTime();
+    makeTMDBCall();
+    document.getElementById('list__fab').addEventListener('click',function(){
+        var listDOM = document.getElementById('series-list');
+        if(listDOM.style.display === "none" || listDOM.style.display === ""){
+            listDOM.style.display = "inline-block";
+        }else{
+            listDOM.style.display = "none";
+        }
+    });
+    setInterval(setDateTime,60000);
+})();
+
+function makeTMDBCall(){
+    var loaderDOM = document.getElementById('load_spinner');
+    loaderDOM.style.display = "block";
+    var cachedData = getCachedData();
+    var isCacheValid = new Date().getTime() - cachedData.refetchTime < 0;
+    if(!!cachedData.result && isCacheValid){
+        showData(cachedData.result);
+        return;
+    }
+    tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
+    function(data){
+        showData(data);
+        setDataToLocalStore(data.results);
+    },
+    function(e){
+        if(cachedData && !!cachedData.result){
+            showData(cachedData.result);
+            ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing old reults.'});
+            return;
+        }
+        ShowNotification({type:'error',message:'Something went wrong. Please try again later.'});
+    });
+}
+
 function setDateTime(){
     var dateCardDOM = document.getElementById('date-card__date'),
         timeCardDOM = document.getElementById('date-card__time'),
@@ -65,30 +103,6 @@ function showData(data){
     generateTemplate(data.results);
 }
 
-function makeTMDBCall(){
-    var loaderDOM = document.getElementById('load_spinner');
-    loaderDOM.style.display = "block";
-    var cachedData = getCachedData();
-    var isCacheValid = new Date().getTime() - cachedData.refetchTime < 0;
-    if(!!cachedData.result && isCacheValid){
-        showData(cachedData.result);
-        return;
-    }
-    tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
-    function(data){
-        showData(data);
-        setDataToLocalStore(data.results);
-    },
-    function(e){
-        if(cachedData && !!cachedData.result){
-            showData(cachedData.result);
-            ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing old reults.'});
-            return;
-        }
-        ShowNotification({type:'error',message:'Something went wrong. Please try again later.'});
-    });
-}
-
 (function() {
 	window.tmdb = {
 		"api_key": "47729872a52678aftb63789",
@@ -133,19 +147,7 @@ function makeTMDBCall(){
 	}
 })();
 
-(function initApp(){
-    setDateTime();
-    makeTMDBCall();
-    document.getElementById('list__fab').addEventListener('click',function(){
-        var listDOM = document.getElementById('series-list');
-        if(listDOM.style.display === "none" || listDOM.style.display === ""){
-            listDOM.style.display = "inline-block";
-        }else{
-            listDOM.style.display = "none";
-        }
-    });
-    setInterval(setDateTime,60000);
-})();
+
 
 function generateTemplate(resultList){
     var tplString = "";
