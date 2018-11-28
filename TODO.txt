@@ -1,3 +1,0 @@
-1. Store results locally.
-2. 12hr expiry time for stored data.
-3. If not connected and validity expired, show old data with a warning message.
