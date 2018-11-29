@@ -1,0 +1,2 @@
+1. Add TMDB logo.
+2. Setup a build system with gulp.
