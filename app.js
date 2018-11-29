@@ -188,7 +188,7 @@ function setDataToLocalStore(resultObj){
             var refetchTime = cachedTime + (12*60*60000); // 12 hour window
             window.localStorage.setItem('bingeTdz_refetchTime',refetchTime);
         }catch(e){
-            console.log('LocalStorage set failed.');
+            ShowNotification({type:'error',message:'Failed to cache results. Please enable LocalStorage to improve preformance.'});
         }
     }
 }
