@@ -1,0 +1,28 @@
+{
+  "name": "bingeTrendz",
+  "version": "1.0.0",
+  "description": "A chrome extension that lists the top 20 trending series of the day on the new tab of the browser.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Parthipan-Natkunam/bingeTrendz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Parthipan-Natkunam/bingeTrendz/issues"
+  },
+  "homepage": "https://github.com/Parthipan-Natkunam/bingeTrendz#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-csso": "^2.0.0",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-uglify-es": "^1.0.4",
+    "run-sequence": "^1.2.2"
+  }
+}
