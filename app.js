@@ -1,3 +1,4 @@
+//https://fnoi0v7owa.execute-api.us-east-1.amazonaws.com/dev/list
 function makeTMDBCall(){
     var loaderDOM = document.getElementById('load_spinner');
     loaderDOM.style.display = "block";
