@@ -1,5 +1,4 @@
-//https://fnoi0v7owa.execute-api.us-east-1.amazonaws.com/dev/list
-function makeTMDBCall(){
+function makeLambdaCall(){
     var loaderDOM = document.getElementById('load_spinner');
     loaderDOM.style.display = "block";
     var cachedData = getCachedData();
@@ -8,19 +7,20 @@ function makeTMDBCall(){
         showData(cachedData.result);
         return;
     }
-    tmdb.call('/trending',{'media_type':'tv','time_window':'day'},
-    function(data){
-        showData(data);
-        setDataToLocalStore(data.results);
-    },
-    function(e){
-        if(cachedData && !!cachedData.result){
-            showData(cachedData.result);
-            ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing older reults.'});
-            return;
+    lambda.call(
+        function(data){
+            showData(data);
+            setDataToLocalStore(data.results);
+        },
+        function(e){
+            if(cachedData && !!cachedData.result){
+                showData(cachedData.result);
+                ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing older reults.'});
+                return;
+            }
+            ShowNotification({type:'error',message:'Something went wrong. Please try again later.'});
         }
-        ShowNotification({type:'error',message:'Something went wrong. Please try again later.'});
-    });
+    );
 }
 
 function setDateTime(){
@@ -69,7 +69,7 @@ function setBackdropImg(imgList){
     var backdropDOM = document.getElementById('base__cover'),
         loaderDOM = document.getElementById('load_spinner'),
         backdropImg = selectImage(imgList);
-        fullImgURI = "url('"+tmdb.images_uri+'/w500/'+backdropImg;+"')";
+        fullImgURI = "url('"+lambda.images_uri+'/w500/'+backdropImg;+"')";
     backdropDOM.style.backgroundImage = fullImgURI;
     loaderDOM.style.display = "none";
 }
@@ -83,32 +83,24 @@ function selectImage(imageList){
 }
 
 function showData(data){
-    data.results = data.results || data;
-    var imgList = data.results.map(function(result){return result.backdrop_path});
+    var resultList = !!data.results ? data.results : data;
+    var imgList = resultList.map(function(result){return result.backdrop_path});
     setBackdropImg(imgList);
-    generateTemplate(data.results);
+    generateTemplate(resultList);
 }
 
 (function() {
-	window.tmdb = {
-		"api_key": "47729872a52678aftb63789",
-		"base_uri": "http://api.themoviedb.org/3",
+	window.lambda = {
 		"images_uri": "http://image.tmdb.org/t/p",
         "timeout": 5000,
-		call: function(url, params, success, error){
-			var params_str = "";
-			for (var key in params) {
-				if (params.hasOwnProperty(key)) {
-                    params_str+="/"+encodeURIComponent(params[key]);
-				}
-            }
-            params_str +="?api_key="+tmdb.api_key;
-			var xhr = new XMLHttpRequest();
-			xhr.timeout = tmdb.timeout;
+        "url": "https://fnoi0v7owa.execute-api.us-east-1.amazonaws.com/dev/list",
+		call: function(success, error){
+            var xhr = new XMLHttpRequest();
+			xhr.timeout = lambda.timeout;
 			xhr.ontimeout = function () {
-				throw("Request timed out: " + url +" "+ params_str);
+				throw("Request timed out");
 			};
-			xhr.open("GET", tmdb.base_uri + url + params_str, true);
+			xhr.open("GET", lambda.url, true);
 			xhr.setRequestHeader('Accept', 'application/json');
 			xhr.responseType = "text";
 			xhr.onreadystatechange = function () {
@@ -121,7 +113,11 @@ function showData(data){
 						}
 					}else{
 						if (typeof error == "function") {
-							error(JSON.parse(this.response));
+							try{
+                                error(JSON.parse(this.response));
+                            }catch(e){
+                                error({"error":"XMLHttpRequest Failed"});
+                            }    
 						}else{
 							throw('No error callback')
 						}
@@ -135,7 +131,7 @@ function showData(data){
 
 (function initApp(){
     setDateTime();
-    makeTMDBCall();
+    makeLambdaCall();
     document.getElementById('list__fab').addEventListener('click',function(){
         var listDOM = document.getElementById('series-list');
         if(listDOM.style.display === "none" || listDOM.style.display === ""){
