@@ -46,16 +46,16 @@ html{
     border-radius: 50%;
     display: inline-block;
     position: absolute;
-    bottom: -40px;
+    bottom: -45px;
 	right: 40%;
 	-webkit-animation: beat 2s ease-in-out infinite;
 	animation: beat 2s ease-in-out infinite;
 	cursor: pointer;
+	border: 1px solid #fff;
 }
 #list__fab>img{
 	position:relative;
-	top:20%;
-	width:40px;
+	width:100%;
 	height:auto;
 }
 
@@ -230,9 +230,6 @@ html{
 		width: 22px;
 		height: 22px;
 	}
-	#list__fab>img{
-		width: 14px;
-	}
 	.series-list__wrapper{
 		width: 85%;
 	}
@@ -306,4 +303,18 @@ html{
 	.series-list__wrapper{
 		width: 1488px;
 	}
+}
+
+.attribution{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 65px;
+    background: rgba(255,255,255);
+    padding: 5px;
+    border-radius: 4px;
+}
+.attribution img{
+	width: 100%;
+	height: auto;
 }
