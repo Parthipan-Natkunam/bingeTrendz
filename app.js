@@ -1,6 +1,11 @@
+function showLoaderAnimation(){
+    var backdropDOM = document.getElementById('base__cover');
+    backdropDOM.style.backgroundSize = "unset";
+    backdropDOM.style.backgroundImage = "url('./logos/30.gif')";
+}
+
 function makeLambdaCall(){
-    var loaderDOM = document.getElementById('load_spinner');
-    loaderDOM.style.display = "block";
+    showLoaderAnimation();
     var cachedData = getCachedData();
     var isCacheValid = new Date().getTime() - cachedData.refetchTime < 0;
     if(!!cachedData.result && isCacheValid){
@@ -15,10 +20,10 @@ function makeLambdaCall(){
         function(e){
             if(cachedData && !!cachedData.result){
                 showData(cachedData.result);
-                ShowNotification({type:'warning',message:'Failed to fetch latest results. Showing older reults.'});
+                showNotification({type:'warning',message:'Failed to fetch latest results. Showing older reults.'});
                 return;
             }
-            ShowNotification({type:'error',message:'Something went wrong. Please try again later.'});
+            showNotification({type:'error',message:'Something went wrong. Please try again later.'});
         }
     );
 }
@@ -66,12 +71,16 @@ function formatTimeString(hour,minute){
 }
 
 function setBackdropImg(imgList){
-    var backdropDOM = document.getElementById('base__cover'),
-        loaderDOM = document.getElementById('load_spinner'),
+    var backdropDOM = document.getElementById("base__cover"),
         backdropImg = selectImage(imgList);
-        fullImgURI = "url('"+lambda.images_uri+'/w500/'+backdropImg;+"')";
-    backdropDOM.style.backgroundImage = fullImgURI;
-    loaderDOM.style.display = "none";
+    var imgObj = new Image();
+    var fullImgURI = lambda.images_uri+"/w500/"+backdropImg;;
+    imgObj.onload = function(){
+        backdropDOM.style.backgroundImage = "url('"+this.src+"')";
+        backdropDOM.style.backgroundSize = "cover";
+        document.getElementById("list__fab").style.display = "inline-block";
+    };
+    imgObj.src = fullImgURI; 
 }
 
 function selectImage(imageList){
@@ -158,7 +167,7 @@ function generateTemplate(resultList){
     listDOM.innerHTML = tplString;
 }
 
-function ShowNotification(opts){
+function showNotification(opts){
     var notificationTplStr = `<div class="notification ${opts.type}">
                              <p>${opts.message} <span id="notification_close">&times;</span></p>
                            </div>`;
@@ -185,7 +194,7 @@ function setDataToLocalStore(resultObj){
             var refetchTime = cachedTime + (12*60*60000); // 12 hour window
             window.localStorage.setItem('bingeTdz_refetchTime',refetchTime);
         }catch(e){
-            ShowNotification({type:'error',message:'Failed to cache results. Please enable LocalStorage to improve preformance.'});
+            showNotification({type:'error',message:'Failed to cache results. Please enable LocalStorage to improve preformance.'});
         }
     }
 }
