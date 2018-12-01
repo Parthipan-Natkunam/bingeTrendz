@@ -4,7 +4,9 @@
   "description": "A chrome extension that lists the top 20 trending series of the day on the new tab of the browser.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp",
+    "serve": "serve build/"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
     "gulp-htmlmin": "^3.0.0",
     "gulp-imagemin": "5.0.3",
     "gulp-uglify-es": "^1.0.4",
-    "run-sequence": "^1.2.2"
+    "run-sequence": "^1.2.2",
+    "serve": "^10.1.1"
   }
 }

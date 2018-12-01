@@ -2,5 +2,7 @@ promos and logos
 sampleJSON.json
 node_modules
 package-lock.json
-build.pem
-build.crx
+
+
+#build files
+**build**
