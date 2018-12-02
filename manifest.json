@@ -2,7 +2,7 @@
  "manifest_version": 2,
  "name": "BingeTrendz",
  "description": "Today's trending TV shows info on your default tab",
- "version": "1.0.0",
+ "version": "1.0.1",
  "author": "Parthipan Natkunam",
 "browser_action": {
    "default_title": "BingeTrendz - Find today's trending shows",
