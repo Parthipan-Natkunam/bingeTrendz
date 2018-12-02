@@ -1,6 +1,6 @@
 {
   "name": "bingeTrendz",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A chrome extension that lists the top 20 trending series of the day on the new tab of the browser.",
   "main": "app.js",
   "scripts": {
