@@ -172,7 +172,12 @@ function getCachedData(){
 				if (this.readyState === 4) {
 					if (this.status === 200 && !!this.response){
 						if (typeof success == "function") {
-                            var respObj = JSON.parse(this.response);
+                            var respObj;
+                            try{
+                                respObj = JSON.parse(this.response);
+                            }catch(e){
+                                respObj = void 0;
+                            } 
                             if(!!respObj && !!respObj.results && respObj.results.length){
                                 success(respObj);
                             }else{
