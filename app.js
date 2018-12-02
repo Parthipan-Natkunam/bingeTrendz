@@ -6,9 +6,11 @@ function formatDateString(date,month,year){
     var yearElements = void 0;
     var shortYear = void 0;
     date = ""+date;
-    if(date.length === 1) date = "0"+date;
+    if(date.length === 1){
+        date = "0"+date;
+    }
     month = monthShortNames[month];
-    yearElements = (""+year).split('');
+    yearElements = (""+year).split("");
     shortYear = yearElements[2]+yearElements[3];
     formattedResult = date + " " + month + " "+ shortYear;
     return formattedResult;
@@ -70,7 +72,7 @@ function setBackdropImg(imgList){
     var backdropDOM = document.getElementById("base__cover"),
         backdropImg = selectImage(imgList);
     var imgObj = new Image();
-    var fullImgURI = lambda.images_uri+"/w500/"+backdropImg;;
+    var fullImgURI = window.lambda.images_uri+"/w500/"+backdropImg;
     imgObj.onload = function(){
         backdropDOM.style.backgroundImage = "url('"+this.src+"')";
         backdropDOM.style.backgroundSize = "cover";
@@ -113,7 +115,7 @@ function generateTemplate(resultList){
 
 function showData(data){
     var resultList = !!data.results ? data.results : data;
-    var imgList = resultList.map(function(result){return result.backdrop_path});
+    var imgList = resultList.map(function(result){return result.backdrop_path;});
     setBackdropImg(imgList);
     generateTemplate(resultList);
 }
@@ -154,7 +156,7 @@ function getCachedData(){
 
  // Global lambda IIFE
 
- (function() {
+ ((function() {
 	window.lambda = {
 		"images_uri": "http://image.tmdb.org/t/p",
         "timeout": 5000,
@@ -165,7 +167,7 @@ function getCachedData(){
 			xhr.ontimeout = function () {
 				throw("Request timed out");
 			};
-			xhr.open("GET", lambda.url, true);
+			xhr.open("GET", window.lambda.url, true);
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.responseType = "text";
 			xhr.onreadystatechange = function () {
@@ -201,8 +203,8 @@ function getCachedData(){
 			};
 			xhr.send();
 		}
-	}
-})();
+	};
+})());
 
 //Lambda Call Function
 
@@ -214,7 +216,7 @@ function makeLambdaCall(){
         showData(cachedData.result);
         return;
     }
-    lambda.call(
+    window.lambda.call(
         function(data){
             showData(data);
             setDataToLocalStore(data.results);
@@ -232,7 +234,7 @@ function makeLambdaCall(){
 
 //Init App
 
-(function initApp(){
+((function initApp(){
     setDateTime();
     makeLambdaCall();
     document.getElementById("list__fab").addEventListener("click",function(){
@@ -244,4 +246,4 @@ function makeLambdaCall(){
         }
     });
     setInterval(setDateTime,60000);
-})();
+})());
