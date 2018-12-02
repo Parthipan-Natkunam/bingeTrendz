@@ -11,7 +11,16 @@
 
 This is a chrome extension that alters the default tab into a trending leaderboard for TV series; listing the top 20 trending series of that particular day.
 
+# Architecture
+
+<h1 align="center">
+  <img src="readmeImg/archi.jpg" alt="architecture illustration"/>
+</h1>
+
+- The proxy is used here to prevent the API key from being exposed on the client side.
+
 # Screenshots
+
 <h1 align="center">
   <img src="readmeImg/sc1.jpg" alt="bingetrendz screenshot 1" width="500px"/>
   <img src="readmeImg/sc2.jpg" alt="bingetrendz screenshot 2" width="500px"/>
