@@ -5,14 +5,15 @@ function formatDateString(date,month,year){
     var monthShortNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     var yearElements = void 0;
     var shortYear = void 0;
+    var shortMonth = void 0;
     date = ""+date;
     if(date.length === 1){
         date = "0"+date;
     }
-    month = monthShortNames[month];
+    shortMonth = monthShortNames[month];
     yearElements = (""+year).split("");
     shortYear = yearElements[2]+yearElements[3];
-    formattedResult = date + " " + month + " "+ shortYear;
+    formattedResult = date + " " + shortMonth + " "+ shortYear;
     return formattedResult;
 }
 
@@ -27,7 +28,9 @@ function formatTimeString(hour,minute){
     }
     hour = ""+hour;
     minute = ""+minute;
-    if(minute.length === 1) minute = "0"+minute;
+    if(minute.length === 1){
+        minute = "0"+minute;
+    }
     return hour + ":" + minute + " " + tailStr;
 }
 
