@@ -72,6 +72,9 @@ function setDateTime(){
 function setBackdropImg(imgList){
     var backdropDOM = document.getElementById("base__cover"),
         backdropImg = selectImage(imgList);
+    while(backdropImg === null || backdropImg === undefined){
+        backdropImg = selectImage(imgList);
+    }
     var imgObj = new Image();
     var fullImgURI = window.lambda.images_uri+"/w500/"+backdropImg;
     imgObj.onload = function(){
@@ -164,7 +167,7 @@ function getCachedData(){
         "url": "https://fnoi0v7owa.execute-api.us-east-1.amazonaws.com/dev/list",
 		"call": function(success, error){
             var xhr = new XMLHttpRequest();
-			xhr.timeout = lambda.timeout;
+			xhr.timeout = window.lambda.timeout;
 			xhr.ontimeout = function () {
 				throw("Request timed out");
 			};
