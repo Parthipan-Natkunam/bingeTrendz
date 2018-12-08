@@ -72,7 +72,7 @@ function setDateTime(){
 function setBackdropImg(imgList){
     var backdropDOM = document.getElementById("base__cover"),
         backdropImg = selectImage(imgList);
-    while(backdropImg === null || backdropImg === undefined){
+    while(backdropImg === null || backdropImg === void 0){
         backdropImg = selectImage(imgList);
     }
     var imgObj = new Image();
@@ -176,32 +176,14 @@ function getCachedData(){
 			xhr.responseType = "text";
 			xhr.onreadystatechange = function () {
 				if (this.readyState === 4) {
-					if (this.status === 200 && !!this.response){
-						if (typeof success == "function") {
-                            var respObj;
-                            try{
-                                respObj = JSON.parse(this.response);
-                            }catch(e){
-                                respObj = void 0;
-                            } 
-                            if(!!respObj && !!respObj.results && respObj.results.length){
-                                success(respObj);
-                            }else{
-                                error({"error":"response has no data"});
-                            }   	
-						}else{
-							throw("No success callback, but the request gave results");
-						}
+					if (this.status === 200){
+                        success(JSON.parse(this.response));	
 					}else{
-						if (typeof error == "function") {
-							try{
-                                error(JSON.parse(this.response));
-                            }catch(e){
-                                error({"error":"XMLHttpRequest Failed"});
-                            }    
-						}else{
-							throw("No error callback");
-						}
+                        try{
+                            error(JSON.parse(this.response));
+                        }catch(e){
+                            error({"error":"XMLHttpRequest Failed"});
+                        }    
 					}
 				}
 			};
